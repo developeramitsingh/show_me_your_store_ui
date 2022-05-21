@@ -1,0 +1,77 @@
+import * as jwt from "jsonwebtoken";
+import axios from '../helpers/axios';
+
+import { BASE_URL } from '../constants/constant';
+
+class UserService {
+    static instance;
+
+     static getInstance() {
+        if (!UserService.instance) {
+            UserService.instance = new UserService();
+        }
+
+        return UserService.instance;
+    }
+
+     createUser(data) {
+        const option = {
+            url: `${BASE_URL}/userRegister`,
+            data,
+        };
+
+        return axios.post(option);
+    }
+
+    login(data) {
+        const option = {
+            url: `${BASE_URL}/login`,
+            data,
+        };
+
+        return axios.post(option);
+    }
+
+     getAllUsers() {
+        const option = {
+            url: `${BASE_URL}/users`,
+        };
+
+        return axios.get(option);
+    }
+
+    doAfterLogin(encodedToken) {
+        const decodedToken = jwt.decode(encodedToken, { complete: true });
+
+        localStorage.setItem("token", encodedToken);
+        localStorage.setItem("user", JSON.stringify(decodedToken.payload))
+
+        return decodedToken.payload;
+    }
+
+    getUser() {
+        let user  = localStorage.getItem('user');
+
+        if (user) {
+            user = JSON.parse(user);
+        }
+
+        return user;
+    }
+
+    getRoleKey() {
+        let user  = localStorage.getItem('user');
+
+        if (user) {
+            user = JSON.parse(user);
+        }
+
+        return user?.roleId?.roleKey;
+    }
+
+    getToken() {
+        return localStorage.getItem('token');
+    }
+}
+
+export default UserService.getInstance();
