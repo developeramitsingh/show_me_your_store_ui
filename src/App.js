@@ -2,6 +2,7 @@ import React from "react";
 import './App.css';
 import StoreRegistration from './layouts/registration/storeRegistration'
 import AddEditUser from './layouts/registration/addEditUser'
+import AddEditProducts from './layouts/products/addEditProducts';
 import DashboardStore from './layouts/dashboards/dashboardStore'
 import DashboardSA from './layouts/dashboards/dashboardSA'
 import Dashboard from './layouts/dashboards/dashboard'
@@ -52,6 +53,10 @@ function App() {
 
                   <Route path="/addEditUser">
                     <AddEditUser/>
+                  </Route>
+
+                  <Route path="/addEditProduct">
+                    <AddEditProducts/>
                   </Route>
                 </Switch>
             </Col>

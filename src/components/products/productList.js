@@ -8,7 +8,7 @@ const ProductList = (props) => {
         return (
             <Row>
                 <Col>
-                    <img src = {BASE_URL+'/'+ product.productImg} alt="product image" />
+                    <img src= {BASE_URL+'/'+ product.productImg} alt="product image" height ="200" />
                 </Col>
                     
                 <Col>

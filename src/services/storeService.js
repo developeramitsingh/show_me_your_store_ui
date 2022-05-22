@@ -20,10 +20,12 @@ class StoreService {
         return axios.post(option);
     }
 
-     getAllStores() {
+     getAllStores(query) {
         const option = {
-            url: `${BASE_URL}/store`,
+            url: `${BASE_URL}/store?query=${JSON.stringify(query)}`,
         };
+
+        console.info(option);
 
         return axios.get(option);
     }
