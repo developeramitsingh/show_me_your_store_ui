@@ -12,13 +12,7 @@ import userService from "../../services/userService";
 
 const StoreRegistration = (props)=>{
     useEffect(() => {
-        let activeUserRole = userService.getRoleKey();
-
-        if (activeUserRole && activeUserRole === ROLES.SA) {
-            console.info(activeUserRole);
-        } else {
-            props.history.push('/login')
-        }
+        userService.checkDoLogin('/storeRegistration');
     }, []);
     const formik = useFormik({
         initialValues: {

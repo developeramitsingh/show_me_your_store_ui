@@ -4,18 +4,24 @@ import StoreRegistration from './layouts/registration/storeRegistration'
 import AddEditUser from './layouts/registration/addEditUser'
 import DashboardStore from './layouts/dashboards/dashboardStore'
 import DashboardSA from './layouts/dashboards/dashboardSA'
+import Dashboard from './layouts/dashboards/dashboard'
 import Login from './layouts/login/login';
 import Home from './layouts/home/home';
 
 import { Container, Row, Col } from 'react-bootstrap';
 
-import { BrowserRouter as Router, Switch,
+import { useHistory, Switch,
   Route } from 'react-router-dom';
+import { historyState } from "./constants/globals";
 
 function App() {
+  const history = useHistory()
+  console.info(history);
+
+  historyState.history = history;
+
   return (
     <div className="App">
-      <Router>
         <Container>
           <Row>
             <Col>
@@ -40,6 +46,10 @@ function App() {
                     <DashboardSA/>
                   </Route>
 
+                  <Route path ="/dashboard">
+                    <Dashboard/>
+                  </Route>
+
                   <Route path="/addEditUser">
                     <AddEditUser/>
                   </Route>
@@ -48,7 +58,6 @@ function App() {
           </Row>
           
         </Container>
-      </Router>
     </div>
   );
 }

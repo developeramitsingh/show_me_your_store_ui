@@ -25,7 +25,7 @@ const Login = (props)=>{
         },
 
         onSubmit: async values => {
-            alert(JSON.stringify(values, null, 2))
+            //alert(JSON.stringify(values, null, 2))
             try {
                 const data = await userService.login(values);
 

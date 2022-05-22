@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from "react";
 import  { useFormik } from 'formik';
-import { Form, Button, CloseButton} from 'react-bootstrap';
-import { STATE_LIST, STORE_TYPES, STORE_CATEGORY, ROLES } from '../../constants/constant';
-
-
+import { Form, Button } from 'react-bootstrap';
+import { ROLES } from '../../constants/constant';
+import Multiselect from 'multiselect-react-dropdown';
 import storeService from '../../services/storeService';
 
 import { withRouter } from 'react-router-dom';
@@ -24,17 +23,20 @@ const AddEditUser = (props)=> {
             })
         }
 
-        console.info({state});
+        //console.info({state});
     }
 
     const getAllStores = async ()=> {
         const allStores = await storeService.getAllStores();
 
-        console.info({allStores});
+        //console.info({allStores});
 
         if(allStores) {
+            const storeData = allStores?.data?.map(store => ({ id: store._id, name: store.storeName }));
+
+            console.info({storeData});
             setState((st)=> {
-                return { ...st, allStores: allStores.data }
+                return { ...st, allStores: storeData }
             })
         }
 
@@ -42,13 +44,7 @@ const AddEditUser = (props)=> {
     }
 
     useEffect(() => {
-        let activeUserRole = userService.getRoleKey();
-
-        if (activeUserRole && activeUserRole === ROLES.SA) {
-            console.info(activeUserRole);
-        } else {
-            props.history.push('/login')
-        }
+        userService.checkDoLogin('/addEditUser');
 
         getAllRoles();
         getAllStores();
@@ -67,12 +63,19 @@ const AddEditUser = (props)=> {
 
         onSubmit: values => {
             alert(JSON.stringify(values, null, 2))
-            storeService.createStore(values);
-        }
+            userService.createUser(values);
+        },
     })
 
     const handleCancel = ()=> {
         props.history.goBack();
+    }
+
+    const handleStoreDropdown = (selectedList, selectedItem)=> {
+        console.info('formik values', formik.values)
+        formik.values.stores = selectedList?.length ? selectedList.map(store => store.id)?.join(',') : '';
+        console.info({selectedList});
+        console.info({selectedItem});
     }
 
     return  (
@@ -153,18 +156,13 @@ const AddEditUser = (props)=> {
 
                 <Form.Group>
                     <Form.Label>Stores: </Form.Label>
-                    <Form.Select 
-                        name = "stores"
-                        onChange = {formik.handleChange}
-                        onBlur = {formik.handleBlur}
-                        value = {formik.values.stores}
-                    >
-                        {
-                            state.allStores && state.allStores.map(cat => (
-                                <option value={cat._id}>{ cat.storeName }</option>
-                            ))
-                        }
-                    </Form.Select> 
+                    <Multiselect
+                        options={state.allStores || [] } // Options to display in the dropdown
+                        selectedValues={formik.values.stores || ''} // Preselected value to persist in dropdown
+                        onSelect={handleStoreDropdown} // Function will trigger on select event
+                        onRemove={handleStoreDropdown} // Function will trigger on remove event
+                        displayValue="name" // Property name to display in the dropdown options
+                        />
                 </Form.Group>
 
                 <Form.Group className="mt-3">
@@ -179,6 +177,6 @@ const AddEditUser = (props)=> {
             </Form>
         </div>
     )
-}
+}   
 
 export default withRouter(AddEditUser);

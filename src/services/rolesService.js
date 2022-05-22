@@ -20,11 +20,18 @@ class RolesService {
         return axios.post(option);
     }
 
-     getAllRoles() {
+    getAllRoles() {
         const option = {
             url: `${BASE_URL}/roles`,
         };
 
+        return axios.get(option);
+    }
+
+    checkRouteAccess(path) {
+        const option = {
+            url: `${BASE_URL}/checkRouteAccess?path=${path}`,
+        };
         return axios.get(option);
     }
 }

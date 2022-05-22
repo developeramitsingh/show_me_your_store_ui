@@ -7,19 +7,14 @@ import userService from '../../services/userService';
 
 const DashboardSA = (props) => {
     useEffect(() => {
-        let activeUserRole = userService.getRoleKey();
-
-        if (activeUserRole && activeUserRole === ROLES.SA) {
-
-        } else {
-            props.history.push('/login')
-        }
+        userService.checkDoLogin('/dashboardSA');
     }, []);
     return (
         <>
             <h1>Dashboard SA</h1>
             <Link to="/storeRegistration"><Button>Register Store</Button></Link>
             <Link to="/addEditUser"><Button>Create User</Button></Link>
+            <Button onClick ={userService.dologout}>Logout</Button>
         </>
     )
 }

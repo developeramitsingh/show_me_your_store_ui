@@ -2,6 +2,8 @@ import * as jwt from "jsonwebtoken";
 import axios from '../helpers/axios';
 
 import { BASE_URL } from '../constants/constant';
+import { historyState } from '../constants/globals';
+import roleService from '../services/rolesService';
 
 class UserService {
     static instance;
@@ -71,6 +73,25 @@ class UserService {
 
     getToken() {
         return localStorage.getItem('token');
+    }
+
+    async checkDoLogin(path) {
+        try {
+          if (path) {
+            let data = await roleService.checkRouteAccess(path);
+            console.info({data});
+            return false;
+          }
+        } catch (err) {
+          console.info("err", err.message);
+          this.dologout();
+          //historyState.history.push("/login");
+        }
+    }
+
+    dologout() {
+        localStorage.clear();
+        historyState.history.push("/login");
     }
 }
 
