@@ -71,6 +71,16 @@ class UserService {
         return user?.roleId?.roleKey;
     }
 
+    getUserStoreIds() {
+        let user  = localStorage.getItem('user');
+
+        if (user) {
+            user = JSON.parse(user);
+        }
+
+        return user?.stores;
+    }
+
     getToken() {
         return localStorage.getItem('token');
     }
