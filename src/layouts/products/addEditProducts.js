@@ -29,13 +29,9 @@ const AddEditProducts = () => {
     const getAllStores = async () => {
         const storeIds = userService.getUserStoreIds();
 
-        console.info({storeIds});
-
         const allStores = await storeService.getAllStores({
             "_id": storeIds
         })
-
-        console.info({allStores});
 
         if (allStores && allStores.data) {
             setState((prevSt) => {
@@ -129,9 +125,6 @@ const AddEditProducts = () => {
             formData.append(key, values[key]);
         }
 
-        console.info({values})
-        console.info('final', {values});
-
         const storeIds = values?.storeId?.map(store => store.id);
         formData.set('storeId', storeIds);
         //check if update case
@@ -144,7 +137,6 @@ const AddEditProducts = () => {
     }
 
     const handleStoreDropdown = (selectedList, selectedItem)=> {
-        console.info('formik values', formik.values)
         formik.values.storeId = selectedList?.length ? selectedList.map(store => store.id)?.join(',') : '';
         setState(prev => {
             return { 
@@ -152,8 +144,6 @@ const AddEditProducts = () => {
                 storeId: selectedList
             }
         })
-        console.info({selectedList});
-        console.info({selectedItem});
     }
 
     return (
