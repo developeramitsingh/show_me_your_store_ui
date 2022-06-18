@@ -25,8 +25,6 @@ class StoreService {
             url: `${BASE_URL}/store?query=${JSON.stringify(query)}`,
         };
 
-        console.info(option);
-
         return axios.get(option);
     }
 }

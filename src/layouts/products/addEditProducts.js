@@ -7,13 +7,26 @@ import { historyState } from '../../constants/globals';
 import userService from "../../services/userService";
 import storeService from "../../services/storeService";
 import Multiselect from 'multiselect-react-dropdown';
+import { useLocation } from "react-router-dom";
 
 const AddEditProducts = () => {
+    const location = useLocation();
     const [state, setState] = useState({
-        storeId: ""
+        storeId: '',
+        productName: '',
+        productCompany: '',
+        productDesc: '',
+        productCategory: '',
+        warranty: '',
+        price: '',
+        imgFile: null,
+        qtyType: '',
+        quantity: '',
+        size:  '',
+        productImgThumb: '',
     });
 
-    const getAllStoresOfUser = async () => {
+    const getAllStores = async () => {
         const storeIds = userService.getUserStoreIds();
 
         console.info({storeIds});
@@ -34,29 +47,53 @@ const AddEditProducts = () => {
         }
     }
 
+    const getEditProduct = async () => {
+        try {
+            if (location.state && location.state.editProductId) {
+                const editProductId = location.state.editProductId;
+
+                console.info({editProductId});
+                const editProduct = await productsService.getProductById(editProductId);
+                console.log({editProduct});
+
+                if (editProduct && editProduct.data) {
+                    console.info({
+                        "_id": editProduct.data.storeId
+                    });
+                    const savedStores = await storeService.getAllStores({
+                        "_id": editProduct.data.storeId
+                    })
+
+                    console.log({savedStores});
+
+                    setState((st) => {
+                        const newData = {
+                            ...editProduct.data,
+                            storeId: savedStores?.data?.map(store => ({ id: store._id, name: store.storeName }))
+                        }
+
+                        delete newData.productImg;
+                        return { ...st, ...newData }
+                    })
+                }
+             }
+        } catch (err) {
+            console.error(`error in getEditProduct: ${err}`);
+        }
+    }
+
     useEffect(() => {
         userService.checkDoLogin('/addEditProducts');
-        getAllStoresOfUser();
+
+        getEditProduct();
+        getAllStores();     
     }, []);
 
     const formik = useFormik({
-        initialValues: {
-            storeId: '',
-            productName: '',
-            productCompany: '',
-            productDesc: '',
-            productCategory: '',
-            warranty: '',
-            price: '',
-            imgFile: null,
-            qtyType: '',
-            quantity: '',
-            size: '',
-            imagePreview:'',
-        },
-
+        initialValues: {...state },
+        enableReinitialize: true,
         onSubmit: values => {
-            handleSubmitFile(values);
+            handleSubmit(values);
         },
     })
 
@@ -71,32 +108,50 @@ const AddEditProducts = () => {
         console.info({imageAsBase64});
         console.info({imageAsFiles});
 
-        //formik.values.imagePreview = imageAsBase64;
+        //formik.values.productImgThumb = imageAsBase64;
         formik.values.imgFile = imageAsFiles;
         setState((prevSt) => {
+            console.info({prevSt});
             return {
                 ...prevSt,
+                ...formik.values,
                 imagePreview: imageAsBase64,
-                //imgFile: imageAsFiles,
+                imgFile: imageAsFiles,
             }
         })
     }
 
     // Image/File Submit Handler
-    const handleSubmitFile = (values) => {
+    const handleSubmit = (values) => {
         const formData = new FormData();
         for (const key in values) {
+            console.info(key, values[key]);
             formData.append(key, values[key]);
         }
 
-        console.info({formData})
+        console.info({values})
+        console.info('final', {values});
 
-        productsService.createProducts(formData);
+        const storeIds = values?.storeId?.map(store => store.id);
+        formData.set('storeId', storeIds);
+        //check if update case
+        if (values._id) {
+            productsService.updateProduct(formData);
+        } else {
+            productsService.createProducts(formData);
+        }
+        historyState.history.goBack();
     }
 
     const handleStoreDropdown = (selectedList, selectedItem)=> {
         console.info('formik values', formik.values)
         formik.values.storeId = selectedList?.length ? selectedList.map(store => store.id)?.join(',') : '';
+        setState(prev => {
+            return { 
+                ...prev,
+                storeId: selectedList
+            }
+        })
         console.info({selectedList});
         console.info({selectedItem});
     }
@@ -119,6 +174,7 @@ const AddEditProducts = () => {
                                 onSelect={handleStoreDropdown} // Function will trigger on select event
                                 onRemove={handleStoreDropdown} // Function will trigger on remove event
                                 displayValue="name" // Property name to display in the dropdown options
+                                disable= { location?.state?.editProductId ? true : false }
                                 />
                         </Form.Group>
                         <Form.Group className ="mb-3">
@@ -164,7 +220,7 @@ const AddEditProducts = () => {
                                 name = "productCategory"
                                 onChange = {formik.handleChange}
                                 onBlur = {formik.handleBlur}
-                                value = {formik.values.Category}
+                                value = {formik.values.productCategory}
                                 placeholder = "Type here product category"
                             />
                         </Form.Group>
@@ -230,7 +286,7 @@ const AddEditProducts = () => {
                         </Form.Group>
 
                         <Form.Group>
-                            <img height="100" src={state.imagePreview} alt="image preview"/>
+                            <img height="100" src={state.productImgThumb || state.imagePreview} alt="preview product img"/>
                         </Form.Group>
                         <Form.Group className ="mb-3">
                             <Form.Label>Product Image: </Form.Label>

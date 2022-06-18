@@ -1,5 +1,6 @@
 import axios from '../helpers/axios';
 import { BASE_URL } from '../constants/constant';
+
 class ProductsService {
     static instance;
 
@@ -26,6 +27,23 @@ class ProductsService {
         };
 
         return axios.get(option);
+    }
+
+    getProductById(productId) {
+        const option = {
+            url: `${BASE_URL}/products/${productId}`,
+        }
+
+        return axios.get(option);
+    }
+
+    updateProduct(data) {
+        const option = {
+            url: `${BASE_URL}/products`,
+            data
+        }
+
+        return axios.put(option);
     }
 }
 

@@ -1,14 +1,15 @@
 import React from 'react';
 import { PencilSquare } from 'react-bootstrap-icons';
 import { Row, Col } from 'react-bootstrap';
-import { BASE_URL } from '../../constants/constant';
+import './productList.css';
 
 const ProductList = (props) => {
     const productList = props.productList?.map(product => {
         return (
             <Row>
                 <Col>
-                    <img src= {BASE_URL+'/'+ product.productImg} alt="product image" height ="200" />
+                    {console.info(product)}
+                    <img src= {product.productImgThumb} alt="productImg" height ="200" />
                 </Col>
                     
                 <Col>
@@ -51,8 +52,8 @@ const ProductList = (props) => {
 
                 <Col>
                     {   props.isStoreAdmin &&
-                        <div className= "productEdit">
-                            <PencilSquare/>
+                        <div className= "productEdit" id= {product._id} onClick = {()=> props.handleEditProduct(product._id)}>
+                            <PencilSquare size={96} />
                         </div>
                     }
                 </Col>
