@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Form, Row, Col  } from 'react-bootstrap';
 import { Search, MicFill, ArrowClockwise } from 'react-bootstrap-icons';
 import productsService from '../../services/productsService';
@@ -20,13 +20,21 @@ const SearchBar = (props)=> {
     const [state, setState] = useState({
         value: '',
     });
+
+    const [storeId, setStoreId] = useState(props.storeId);
+
     const fetchData = async (val) => {
-        const searchedProducts = await productsService.searchProduct(props.storeId, val);
+        const searchedProducts = await productsService.searchProduct(storeId, val);
 
         props.setParentState(prev => {
             return { ...prev, allProducts: searchedProducts?.data || [] };
         })
     };
+
+    useEffect(()=> {
+        setStoreId(props.storeId);
+
+    }, [storeId, props.storeId])
 
     let debouncedFetch = useRef(debounce(fetchData, 500)).current;
 

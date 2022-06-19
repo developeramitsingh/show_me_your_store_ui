@@ -12,7 +12,7 @@ const Login = (props)=>{
         if (roleKey === ROLES.SA) {
             props.history.push('/dashboardSA');
         } else if (roleKey === ROLES.CA) {
-            props.history.push('/dashboardStore');
+            props.history.push('/storesList');
         } else if (roleKey === ROLES.UA) {
             props.history.push('/dashboard');
         }
@@ -34,7 +34,7 @@ const Login = (props)=>{
 
                     //alert(JSON.stringify(user, null, 2));
                     if (user.roleId.roleKey === ROLES.CA) {
-                        props.history.push('/dashboardStore');
+                        props.history.push('/storesList');
                     } else if (user.roleId.roleKey === ROLES.UA) {
                         props.history.push('/dashboard');
                     } else if (user.roleId.roleKey === ROLES.SA) {

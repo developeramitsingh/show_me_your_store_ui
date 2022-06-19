@@ -2,19 +2,29 @@ import React, { useEffect, useState } from 'react'
 import userService from '../../services/userService';
 import productsService from '../../services/productsService';
 import { Row, Col, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import ProductList from '../../components/products/productList';
 import SearchBar from '../../components/search/searchBar';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation, Link } from "react-router-dom";
 
 const DashboardStore = () => {
-    const [state, setState] = useState({});
+    const location = useLocation();
+
+    const [state, setState] = useState({
+        storeId: location?.state?.storeId,
+    });
+
+    const [storeId, setStoreId] = useState(null);
     const history = useHistory();
+
 
     const getAllProducts = async () => {
         try {
-           const allProducts =  await productsService.getAllProducts();
-           console.info({allProducts});
+           console.info('getAllPrdict', storeId);
+           if(!storeId) {
+               return;
+           }
+           const allProducts =  await productsService.getAllProductsByQuery({storeId });
+           console.info('here----->', {allProducts});
 
            if (allProducts) {
                 setState((prevSt) => {
@@ -28,8 +38,11 @@ const DashboardStore = () => {
     useEffect(() => {
         userService.checkDoLogin('/dashboardStore');
 
+        console.info({iiii: location?.state?.storeId})
+        setStoreId(() => location?.state?.storeId);
+
         getAllProducts();
-    }, []);
+    }, [storeId, location?.state?.storeId]);
 
     const handleEditProduct = (productId)=> {
         history.push({ pathname: '/addEditProduct', state: { editProductId:  productId } });
@@ -37,9 +50,12 @@ const DashboardStore = () => {
 
     return (
         <>
-            <Row className="right mt-2">
-                <Col>
-                    <Button onClick ={userService.dologout}>Logout</Button>
+            <Row className="mt-2">
+                <Col className="right">
+                    <div style={{ float: 'right'}}>
+                        <Button style= {{marginRight: '10px'}} onClick ={()=> history.push('/storesList')}>Go Back</Button>
+                        <Button onClick ={userService.dologout}>Logout</Button>
+                    </div>
                 </Col>
             </Row>
 
@@ -57,7 +73,8 @@ const DashboardStore = () => {
 
             <Row>
                 <Col>
-                    <SearchBar setParentState ={setState} storeId ="626d86685705125ef0933934"/>
+                {console.info({storeId}, 'dd-???????')}
+                    <SearchBar setParentState ={setState} storeId ={storeId}/>
                 </Col>
             </Row>
 

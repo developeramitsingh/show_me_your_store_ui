@@ -21,9 +21,17 @@ class ProductsService {
         return axios.post(option);
     }
 
-     getAllProducts() {
+    getAllProducts() {
         const option = {
             url: `${BASE_URL}/products`,
+        };
+
+        return axios.get(option);
+    }
+
+    getAllProductsByQuery(query) {
+        const option = {
+            url: `${BASE_URL}/products?query=${JSON.stringify(query)}`,
         };
 
         return axios.get(option);

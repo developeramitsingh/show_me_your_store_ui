@@ -1,15 +1,16 @@
 import React from "react";
 import './App.css';
-import StoreRegistration from './layouts/registration/storeRegistration'
-import AddEditUser from './layouts/registration/addEditUser'
+import StoreRegistration from './layouts/registration/storeRegistration';
+import AddEditUser from './layouts/registration/addEditUser';
 import AddEditProducts from './layouts/products/addEditProducts';
 import DashboardStore from './layouts/dashboards/dashboardStore'
-import DashboardSA from './layouts/dashboards/dashboardSA'
-import Dashboard from './layouts/dashboards/dashboard'
+import DashboardSA from './layouts/dashboards/dashboardSA';
+import Dashboard from './layouts/dashboards/dashboard';
+import StoresList from './layouts/stores/storesList';
 import Login from './layouts/login/login';
 import Home from './layouts/home/home';
 
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 
 import { useHistory, Switch,
   Route } from 'react-router-dom';
@@ -43,6 +44,10 @@ function App() {
 
             <Route path ="/dashboardSA">
               <DashboardSA/>
+            </Route>
+
+            <Route path ="/StoresList">
+              <StoresList/>
             </Route>
 
             <Route path ="/dashboard">
