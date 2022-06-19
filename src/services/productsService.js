@@ -37,6 +37,14 @@ class ProductsService {
         return axios.get(option);
     }
 
+    searchProduct(storeId, searchString) {
+        const option = {
+            url: `${BASE_URL}/products/search/query?storeId=${storeId}&searchString=${searchString}`,
+        }
+
+        return axios.get(option);
+    }
+
     updateProduct(data) {
         const option = {
             url: `${BASE_URL}/products`,

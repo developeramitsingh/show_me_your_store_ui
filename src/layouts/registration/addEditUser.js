@@ -27,7 +27,7 @@ const AddEditUser = (props)=> {
     }
 
     const getAllStores = async ()=> {
-        const allStores = await storeService.getAllStores();
+        const allStores = await storeService.getAllStores( {isActive: true });
 
         //console.info({allStores});
 

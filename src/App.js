@@ -24,44 +24,39 @@ function App() {
   return (
     <div className="App">
         <Container>
-          <Row>
-            <Col>
-                <Switch>
-                  <Route exact path ="/">
-                    <Home/>
-                  </Route>
+          <Switch>
+            <Route exact path ="/">
+              <Home/>
+            </Route>
 
-                  <Route path ="/login">
-                    <Login/>
-                  </Route>
+            <Route path ="/login">
+              <Login/>
+            </Route>
 
-                  <Route path ="/storeRegistration">
-                    <StoreRegistration/>
-                  </Route>
+            <Route path ="/storeRegistration">
+              <StoreRegistration/>
+            </Route>
 
-                  <Route path ="/dashboardStore">
-                    <DashboardStore/>
-                  </Route>
+            <Route path ="/dashboardStore">
+              <DashboardStore/>
+            </Route>
 
-                  <Route path ="/dashboardSA">
-                    <DashboardSA/>
-                  </Route>
+            <Route path ="/dashboardSA">
+              <DashboardSA/>
+            </Route>
 
-                  <Route path ="/dashboard">
-                    <Dashboard/>
-                  </Route>
+            <Route path ="/dashboard">
+              <Dashboard/>
+            </Route>
 
-                  <Route path="/addEditUser">
-                    <AddEditUser/>
-                  </Route>
+            <Route path="/addEditUser">
+              <AddEditUser/>
+            </Route>
 
-                  <Route path="/addEditProduct">
-                    <AddEditProducts/>
-                  </Route>
-                </Switch>
-            </Col>
-          </Row>
-          
+            <Route path="/addEditProduct">
+              <AddEditProducts/>
+            </Route>
+          </Switch>
         </Container>
     </div>
   );

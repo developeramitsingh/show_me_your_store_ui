@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import  { useFormik } from 'formik';
-import { Form, Button, Row, Col  } from 'react-bootstrap';
+import { Form, Button, Row, Col, ButtonGroup, ToggleButton } from 'react-bootstrap';
 
 import productsService from '../../services/productsService';
 import { historyState } from '../../constants/globals';
@@ -17,6 +17,7 @@ const AddEditProducts = () => {
         productCompany: '',
         productDesc: '',
         productCategory: '',
+        isAvailable: true,
         warranty: '',
         price: '',
         imgFile: null,
@@ -25,6 +26,11 @@ const AddEditProducts = () => {
         size:  '',
         productImgThumb: '',
     });
+
+    const productRadios = [
+        { name: 'Available', value: ['1', true] },
+        { name: 'Not Available', value: ['0', false] },
+    ];
 
     const getAllStores = async () => {
         const storeIds = userService.getUserStoreIds();
@@ -47,20 +53,12 @@ const AddEditProducts = () => {
         try {
             if (location.state && location.state.editProductId) {
                 const editProductId = location.state.editProductId;
-
-                console.info({editProductId});
                 const editProduct = await productsService.getProductById(editProductId);
-                console.log({editProduct});
 
                 if (editProduct && editProduct.data) {
-                    console.info({
-                        "_id": editProduct.data.storeId
-                    });
                     const savedStores = await storeService.getAllStores({
                         "_id": editProduct.data.storeId
                     })
-
-                    console.log({savedStores});
 
                     setState((st) => {
                         const newData = {
@@ -156,6 +154,22 @@ const AddEditProducts = () => {
             <Row>
                 <Col>
                     <Form onSubmit ={formik.handleSubmit} className="mt-4">
+                        <ButtonGroup>
+                            {productRadios.map((radio, idx) => (
+                            <ToggleButton
+                                key={idx}
+                                id={`radio-${idx}`}
+                                type="radio"
+                                variant={idx % 2 ? 'outline-danger' : 'outline-success' }
+                                name="isAvailable"
+                                value={radio.value[0]}
+                                checked={radio.value.includes(formik.values.isAvailable)}
+                                onChange={formik.handleChange}
+                            >
+                                {radio.name}
+                            </ToggleButton>
+                            ))}
+                        </ButtonGroup>
                         <Form.Group>
                             <Form.Label>Stores: </Form.Label>
                             <Multiselect

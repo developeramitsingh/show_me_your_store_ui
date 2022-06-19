@@ -6,13 +6,12 @@ import './productList.css';
 const ProductList = (props) => {
     const productList = props.productList?.map(product => {
         return (
-            <Row>
-                <Col>
-                    {console.info(product)}
-                    <img src= {product.productImgThumb} alt="productImg" height ="200" />
+            <Row className= "mt-5 mb-5">
+                <Col xl={4} lg={4} md={3} sm={12} xs={12}>
+                    <img src= {product.productImg} style= {{marginTop: '0px'}} alt="productImg" width ="100%" />
                 </Col>
                     
-                <Col>
+                <Col xl={5} lg={5} md={4} sm={12} xs={12} className= "mt-1 mb-1">
                     <div className ="productGroup">
                         <div className ="productHeading">
                             Product Name: {product.productName}
@@ -36,24 +35,24 @@ const ProductList = (props) => {
                     </div>
                 </Col>
 
-                <Col>
+                <Col xl={1} lg={1} md={2} sm={12} xs={12} className= "mt-1 mb-1">
                     <div className ="productPrice">
                         Price: {product.price} Rs. /{product.quantity} {product.qtyType}
                     </div>
                 </Col>
 
-                <Col>
+                <Col xl={1} lg={1} md={2} sm={12} xs={12} className= "mt-1 mb-1">
                     <div className ="productAvailableGroup">
                         <div className ="productAvailable">
-                            Available: {product.isAvailable ? "Yes" : "No"} <span className="productAvailableSign"></span>
+                            Available: {product.isAvailable ? "Yes" : "No"} <span className={`productAvailableSign ${product.isAvailable ? `productExist` : `productNotExist`}`}></span>
                         </div>
                     </div>
                 </Col>
 
-                <Col>
+                <Col xl={1} lg={1} md={1} sm={12} xs={12} className= "mt-1 mb-1">
                     {   props.isStoreAdmin &&
                         <div className= "productEdit" id= {product._id} onClick = {()=> props.handleEditProduct(product._id)}>
-                            <PencilSquare size={96} />
+                            <div className="productEditBtn">Edit</div>
                         </div>
                     }
                 </Col>
