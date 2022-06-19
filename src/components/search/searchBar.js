@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Form, Button, Row, Col  } from 'react-bootstrap';
+import { Form, Row, Col  } from 'react-bootstrap';
 import { Search, MicFill, ArrowClockwise } from 'react-bootstrap-icons';
 import productsService from '../../services/productsService';
 import './searchBar.css';

@@ -1,5 +1,4 @@
 import React from 'react';
-import { PencilSquare } from 'react-bootstrap-icons';
 import { Row, Col } from 'react-bootstrap';
 import './productList.css';
 

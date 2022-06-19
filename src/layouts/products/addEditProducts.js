@@ -17,7 +17,7 @@ const AddEditProducts = () => {
         productCompany: '',
         productDesc: '',
         productCategory: '',
-        isAvailable: true,
+        isAvailable: null,
         warranty: '',
         price: '',
         imgFile: null,

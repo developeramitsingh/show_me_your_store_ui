@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import userService from '../../services/userService';
 import productsService from '../../services/productsService';
-import { Row, Col, Button, Container } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import ProductList from '../../components/products/productList';
 import SearchBar from '../../components/search/searchBar';
