@@ -57,7 +57,11 @@ const StoresList = () => {
                                             <div>Phone: {store.storePhone}</div>
                                             <div>Active: {store.isActive}</div>
                                         </Card.Text>
-                                        <Button variant="primary" id={store._id} onClick={handleClick}>Go to Store</Button>
+                                        <div className='d-flex justify-content-between'>
+                                            <Button variant="primary" id={store._id} onClick={handleClick}>Go to Store</Button>
+
+                                            <Button variant="primary" id={store._id} onClick={handleClick}>Edit Store</Button>
+                                        </div>
                                     </Card.Body>
                                 </Card>
                             )
