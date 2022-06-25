@@ -27,9 +27,9 @@ const AddEditUser = (props)=> {
     }
 
     const getAllStores = async ()=> {
-        const allStores = await storeService.getAllStores( {isActive: true });
+        const allStores = await storeService.getAllStoresUnassigned( {isActive: true });
 
-        //console.info({allStores});
+        console.info({allStores});
 
         if(allStores) {
             const storeData = allStores?.data?.map(store => ({ id: store._id, name: store.storeName }));

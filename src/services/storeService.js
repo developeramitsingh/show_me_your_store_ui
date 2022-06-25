@@ -27,6 +27,14 @@ class StoreService {
 
         return axios.get(option);
     }
+
+    getAllStoresUnassigned(query) {
+        const option = {
+            url: `${BASE_URL}/store-unassigned?query=${JSON.stringify(query)}`,
+        };
+
+        return axios.get(option);
+    }
 }
 
 export default StoreService.getInstance();

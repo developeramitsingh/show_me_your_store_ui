@@ -7,11 +7,11 @@ import './searchBar.css';
 const debounce = (func, delay)=> {
     let debounceHandler;
 
-    return function (val) {
+    return function (val, storeId) {
         clearTimeout(debounceHandler);
 
         debounceHandler = setTimeout(async () => {
-            func(val);
+            func(val, storeId);
         }, delay);
     }
 }
@@ -23,8 +23,8 @@ const SearchBar = (props)=> {
 
     const [storeId, setStoreId] = useState(props.storeId);
 
-    const fetchData = async (val) => {
-        const searchedProducts = await productsService.searchProduct(storeId, val);
+    const fetchData = async (val, _storeId = storeId) => {
+        const searchedProducts = await productsService.searchProduct(_storeId, val);
 
         props.setParentState(prev => {
             return { ...prev, allProducts: searchedProducts?.data || [] };
@@ -44,12 +44,12 @@ const SearchBar = (props)=> {
         setState(prev => {
             return { ...prev, value: val }
         })
-        debouncedFetch(val);
+        debouncedFetch(val, storeId);
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        debouncedFetch(state.value);
+        debouncedFetch(state.value, storeId);
     }
     return (
         <>
