@@ -1,7 +1,7 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import  { useFormik } from 'formik';
 import { Form, Button} from 'react-bootstrap';
-import { STATE_LIST, STORE_TYPES, STORE_CATEGORY, ROLES } from '../../constants/constant';
+import { STATE_LIST, STORE_TYPES, STORE_CATEGORY } from '../../constants/constant';
 
 
 import storeService from '../../services/storeService';
@@ -11,22 +11,64 @@ import userService from "../../services/userService";
 
 
 const StoreRegistration = (props)=>{
+    const [state, setState]= useState({
+        storeName: '',
+        storePhone: '',
+        imgFile: null,
+        storeImgThumb: '',
+    });
     useEffect(() => {
-        userService.checkDoLogin('/storeRegistration');
+        userService.checkDoLogin('/addEditStore');
     }, []);
     const formik = useFormik({
-        initialValues: {
-            storeName: '',
-        },
+        initialValues: {...state },
+        enableReinitialize: true,
 
         onSubmit: values => {
             alert(JSON.stringify(values, null, 2))
-            storeService.createStore(values);
+            handleSubmit(values);
         }
     })
 
-    const handleCancel = ()=> {
+    const goBack = ()=> {
         props.history.goBack();
+    }
+
+    const handleImagePreview = (e) => {
+        let imageAsBase64 = URL.createObjectURL(e.target.files[0])
+        let imageAsFiles = e.target.files[0];
+
+        console.info({imageAsBase64});
+        console.info({imageAsFiles});
+
+        //formik.values.productImgThumb = imageAsBase64;
+        formik.values.imgFile = imageAsFiles;
+        setState((prevSt) => {
+            console.info({prevSt});
+            return {
+                ...prevSt,
+                ...formik.values,
+                imagePreview: imageAsBase64,
+                imgFile: imageAsFiles,
+            }
+        })
+    }
+
+    // Image/File Submit Handler
+    const handleSubmit = (values) => {
+        console.info({values});
+        const formData = new FormData();
+        for (const key in values) {
+            console.info(key, values[key]);
+            formData.append(key, values[key]);
+        }
+        //check if update case
+        if (values._id) {
+            storeService.updateProduct(formData);
+        } else {
+            storeService.createStore(formData);
+        }
+        goBack();
     }
 
     return  (
@@ -89,6 +131,18 @@ const StoreRegistration = (props)=>{
                         }
                     </Form.Select> 
                 </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Store Phone: </Form.Label>
+                    <Form.Control 
+                        type = "text"
+                        name = "storePhone"
+                        onChange = {formik.handleChange}
+                        onBlur = {formik.handleBlur}
+                        value = {formik.values.storePhone}
+                        placeholder = "Type here Store Phone Number"
+                    />
+                </Form.Group>
                 <Form.Group>
                     <Form.Label>Store Type: </Form.Label>
                     <Form.Select 
@@ -121,12 +175,26 @@ const StoreRegistration = (props)=>{
                     </Form.Select> 
                 </Form.Group>
 
+                <Form.Group>
+                    <img height="100" src={state.storeImgThumb || state.imagePreview} alt="preview store img"/>
+                </Form.Group>
+                <Form.Group className ="mb-3">
+                    <Form.Label>Store Image: </Form.Label>
+                    <Form.Control 
+                        type = "file"
+                        name = "storeImg"
+                        onChange = {handleImagePreview}
+                        onBlur = {formik.handleBlur}
+                        value = {formik.values.storeImg}
+                    />
+                </Form.Group>
+
                 <Form.Group className="mt-3">
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
 
-                    <Button onClick ={handleCancel} className ="m-2" variant="primary" type="button">
+                    <Button onClick ={goBack} className ="m-2" variant="primary" type="button">
                         Cancel
                     </Button>
                 </Form.Group>

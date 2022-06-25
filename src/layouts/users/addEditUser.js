@@ -58,10 +58,11 @@ const AddEditUser = (props)=> {
         onSubmit: values => {
             alert(JSON.stringify(values, null, 2))
             userService.createUser(values);
+            goBack();
         },
     })
 
-    const handleCancel = ()=> {
+    const goBack = ()=> {
         props.history.goBack();
     }
 
@@ -163,7 +164,7 @@ const AddEditUser = (props)=> {
                         Submit
                     </Button>
 
-                    <Button onClick ={handleCancel} className ="m-2" variant="primary" type="button">
+                    <Button onClick ={goBack} className ="m-2" variant="primary" type="button">
                         Cancel
                     </Button>
                 </Form.Group>

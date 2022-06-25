@@ -43,14 +43,18 @@ const StoresList = () => {
                 <Col className="d-flex">
                     {
                         state.allStores && state.allStores.map(store => {
+                            {console.table(store)}
                             return (
                                 <Card id={store._id} style={{ width: '18rem' }}>
                                     <Card.Img variant="top" src={store.storeImg} />
                                     <Card.Body>
                                         <Card.Title>{store.storeName}</Card.Title>
                                         <Card.Text>
+                                            <div>Store Type: {store.storeType}</div>
+                                            <div>Store Category: {store.storeCategory}</div>
                                             <div>Address: {store.storeAddress}</div>
-                                            <div>City: {store.city}</div>
+                                            <div>City: {store.storeCity}</div>
+                                            <div>Phone: {store.storePhone}</div>
                                             <div>Active: {store.isActive}</div>
                                         </Card.Text>
                                         <Button variant="primary" id={store._id} onClick={handleClick}>Go to Store</Button>

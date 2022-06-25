@@ -12,7 +12,7 @@ const DashboardSA = (props) => {
     return (
         <>
             <h1>Dashboard SA</h1>
-            <Link to="/storeRegistration"><Button>Register Store</Button></Link>
+            <Link to="/addEditStore"><Button>Register Store</Button></Link>
             <Link to="/addEditUser"><Button>Create User</Button></Link>
             <Button onClick ={userService.dologout}>Logout</Button>
         </>

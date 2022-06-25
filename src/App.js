@@ -1,6 +1,6 @@
 import React from "react";
 import './App.css';
-import StoreRegistration from './layouts/registration/storeRegistration';
+import AddEditStore from './layouts/stores/addEditStore';
 import AddEditUser from './layouts/registration/addEditUser';
 import AddEditProducts from './layouts/products/addEditProducts';
 import DashboardStore from './layouts/dashboards/dashboardStore'
@@ -34,8 +34,8 @@ function App() {
               <Login/>
             </Route>
 
-            <Route path ="/storeRegistration">
-              <StoreRegistration/>
+            <Route path ="/addEditStore">
+              <AddEditStore/>
             </Route>
 
             <Route path ="/dashboardStore">
