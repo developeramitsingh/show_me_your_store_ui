@@ -154,22 +154,25 @@ const AddEditProducts = () => {
             <Row>
                 <Col>
                     <Form onSubmit ={formik.handleSubmit} className="mt-4">
-                        <ButtonGroup>
-                            {productRadios.map((radio, idx) => (
-                            <ToggleButton
-                                key={idx}
-                                id={`radio-${idx}`}
-                                type="radio"
-                                variant={idx % 2 ? 'outline-danger' : 'outline-success' }
-                                name="isAvailable"
-                                value={radio.value[0]}
-                                checked={radio.value.includes(formik.values.isAvailable)}
-                                onChange={formik.handleChange}
-                            >
-                                {radio.name}
-                            </ToggleButton>
-                            ))}
-                        </ButtonGroup>
+                        {
+                            location?.state?.editProductId &&
+                            <ButtonGroup>
+                                {productRadios.map((radio, idx) => (
+                                <ToggleButton
+                                    key={idx}
+                                    id={`radio-${idx}`}
+                                    type="radio"
+                                    variant={idx % 2 ? 'outline-danger' : 'outline-success' }
+                                    name="isAvailable"
+                                    value={radio.value[0]}
+                                    checked={radio.value.includes(formik.values.isAvailable)}
+                                    onChange={formik.handleChange}
+                                >
+                                    {radio.name}
+                                </ToggleButton>
+                                ))}
+                            </ButtonGroup>
+                        }                        
                         <Form.Group>
                             <Form.Label>Stores: </Form.Label>
                             <Multiselect
