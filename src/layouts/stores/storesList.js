@@ -44,7 +44,7 @@ const StoresList = () => {
                     {
                         state.allStores && state.allStores.map(store => {
                             return (
-                                <Card id={store._id} onClick={handleClick} style={{ width: '18rem' }}>
+                                <Card id={store._id} style={{ width: '18rem' }}>
                                     <Card.Img variant="top" src={store.storeImg} />
                                     <Card.Body>
                                         <Card.Title>{store.storeName}</Card.Title>

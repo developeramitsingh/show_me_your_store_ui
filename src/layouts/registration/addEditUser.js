@@ -15,32 +15,26 @@ const AddEditUser = (props)=> {
     const getAllRoles = async ()=> {
         const allRoles = await rolesService.getAllRoles();
 
-        console.info({allRoles});
-
         if(allRoles) {
+            const CARoleId = allRoles.data
+                .filter(role => role.roleKey === ROLES.CA)?.[0]?._id;
+
             setState((st)=> {
-                return { ...st, allRoles: allRoles.data }
+                return { ...st, allRoles: allRoles.data, CARoleId }
             })
         }
-
-        //console.info({state});
     }
 
     const getAllStores = async ()=> {
         const allStores = await storeService.getAllStoresUnassigned( {isActive: true });
 
-        console.info({allStores});
-
         if(allStores) {
             const storeData = allStores?.data?.map(store => ({ id: store._id, name: store.storeName }));
 
-            console.info({storeData});
             setState((st)=> {
                 return { ...st, allStores: storeData }
             })
         }
-
-        console.info({state});
     }
 
     useEffect(() => {
@@ -72,10 +66,7 @@ const AddEditUser = (props)=> {
     }
 
     const handleStoreDropdown = (selectedList, selectedItem)=> {
-        console.info('formik values', formik.values)
         formik.values.stores = selectedList?.length ? selectedList.map(store => store.id)?.join(',') : '';
-        console.info({selectedList});
-        console.info({selectedItem});
     }
 
     return  (
@@ -152,18 +143,20 @@ const AddEditUser = (props)=> {
                         placeholder = "Type here password again"
                     /> 
                 </Form.Group>
-                
 
-                <Form.Group>
-                    <Form.Label>Stores: </Form.Label>
-                    <Multiselect
-                        options={state.allStores || [] } // Options to display in the dropdown
-                        selectedValues={formik.values.stores || ''} // Preselected value to persist in dropdown
-                        onSelect={handleStoreDropdown} // Function will trigger on select event
-                        onRemove={handleStoreDropdown} // Function will trigger on remove event
-                        displayValue="name" // Property name to display in the dropdown options
-                        />
-                </Form.Group>
+                { 
+                    formik?.values?.roleId === state?.CARoleId &&
+                    <Form.Group>
+                        <Form.Label>Stores: </Form.Label>
+                        <Multiselect
+                            options={state.allStores || [] } // Options to display in the dropdown
+                            selectedValues={formik.values.stores || ''} // Preselected value to persist in dropdown
+                            onSelect={handleStoreDropdown} // Function will trigger on select event
+                            onRemove={handleStoreDropdown} // Function will trigger on remove event
+                            displayValue="name" // Property name to display in the dropdown options
+                            />
+                    </Form.Group>
+                }
 
                 <Form.Group className="mt-3">
                     <Button variant="primary" type="submit">
