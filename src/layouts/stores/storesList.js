@@ -24,10 +24,10 @@ const StoresList = () => {
         allStores();
     }, [])
 
-    const handleClick = (e)=> {
-        e.preventDefault();
+    const handleClick = (e)=> {        
         const id = e.target.id;
-        const name = e.target.name;
+        const name = e.target.getAttribute('name');
+
         if (name === 'goToDashboard') {
             history.push({
                 pathname: '/dashboardStore',
