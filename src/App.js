@@ -1,7 +1,7 @@
 import React from "react";
 import './App.css';
 import AddEditStore from './layouts/stores/addEditStore';
-import AddEditUser from './layouts/registration/addEditUser';
+import AddEditUser from './layouts/users/addEditUser';
 import AddEditProducts from './layouts/products/addEditProducts';
 import DashboardStore from './layouts/dashboards/dashboardStore'
 import DashboardSA from './layouts/dashboards/dashboardSA';

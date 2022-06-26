@@ -13,3 +13,18 @@
 .left {
   text-align: left;
 }
+
+.primary-btn {
+  background-color: greenyellow;
+  padding: 10px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.primary-btn:hover {
+  background-color: indigo;
+  color: wheat;
+}

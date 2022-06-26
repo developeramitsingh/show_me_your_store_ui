@@ -7,7 +7,7 @@ const ProductList = (props) => {
         return (
             <Row className= "mt-5 mb-5">
                 <Col xl={4} lg={4} md={3} sm={12} xs={12}>
-                    <img src= {product.productImg} style= {{marginTop: '0px'}} alt="productImg" width ="100%" />
+                    <img src= {product.productImg} style= {{marginTop: '0px', maxWidth: "200px"}} alt="productImg"/>
                 </Col>
                     
                 <Col xl={5} lg={5} md={4} sm={12} xs={12} className= "mt-1 mb-1">

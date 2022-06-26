@@ -17,6 +17,10 @@ const StoresList = () => {
         })
     }
     useEffect(()=> {
+        const user = userService.getUser();
+        setState(prev => {
+            return { ...prev, ...user};
+        })
         allStores();
     }, [])
 
@@ -41,8 +45,13 @@ const StoresList = () => {
         <>
             <Row className="mt-2 mb-2">
                 <Col className="right">
-                    <div style={{ float: 'right'}}>
-                        <Button onClick ={userService.dologout}>Logout</Button>
+                    <div className="d-flex justify-content-end">
+                        { state.userName &&
+                         <div>Welcome {state.userName}</div>
+                        }
+                        <div>
+                            <Button onClick= {userService.dologout}>Logout</Button>
+                        </div>
                     </div>
                 </Col>
             </Row>
@@ -63,11 +72,15 @@ const StoresList = () => {
                                             <div>Phone: {store.storePhone}</div>
                                             <div>Active: {store.isActive}</div>
                                         </Card.Text>
-                                        <div className='d-flex justify-content-between'>
-                                            <Button variant="primary" name="goToDashboard" id={store._id} onClick={handleClick}>Go to Dashboard</Button>
+                                        <Row>
+                                            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+                                                <div className="primary-btn" name="goToDashboard" id={store._id} onClick={handleClick}>Go to Dashboard</div>
+                                            </Col>
 
-                                            <Button variant="primary" name="editStore" id={store._id} onClick={handleClick}>Edit Store</Button>
-                                        </div>
+                                            <Col xl={6} lg={6} md={6} sm={12} xs={12}>
+                                                <div className="primary-btn" name="editStore" id={store._id} onClick={handleClick}>Edit Store</div>
+                                            </Col>
+                                        </Row>
                                     </Card.Body>
                                 </Card>
                             )
