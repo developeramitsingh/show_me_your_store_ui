@@ -6,11 +6,11 @@ const ProductList = (props) => {
     const productList = props.productList?.map(product => {
         return (
             <Row className= "mt-5 mb-5">
-                <Col xl={4} lg={4} md={3} sm={12} xs={12}>
-                    <img src= {product.productImg} style= {{marginTop: '0px', maxWidth: "200px"}} alt="productImg"/>
+                <Col xl={3} lg={3} md={3} sm={12} xs={12}>
+                    <img src= {product.productImg} style= {{marginTop: '0px', maxWidth: "100%"}} alt="productImg"/>
                 </Col>
                     
-                <Col xl={5} lg={5} md={4} sm={12} xs={12} className= "mt-1 mb-1">
+                <Col xl={6} lg={6} md={4} sm={12} xs={12} className= "mt-1 mb-1">
                     <div className ="productGroup">
                         <div className ="productHeading">
                             Product Name: {product.productName}

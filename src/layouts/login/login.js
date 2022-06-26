@@ -9,6 +9,7 @@ import {ROLES} from '../../constants/constant';
 const Login = (props)=>{
     useEffect(()=> {
         const roleKey = userService.getRoleKey();
+        console.info({roleKey})
         if (roleKey === ROLES.SA) {
             props.history.push('/dashboardSA');
         } else if (roleKey === ROLES.CA) {

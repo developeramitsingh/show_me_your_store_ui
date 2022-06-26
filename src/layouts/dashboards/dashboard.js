@@ -5,10 +5,11 @@ import productsService from '../../services/productsService';
 import { Row, Col, Button } from 'react-bootstrap';
 import ProductList from '../../components/products/productList';
 import SearchBar from '../../components/search/searchBar';
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 const Dashboard = (props) => {
     const location = useLocation();
+    const history = useHistory();
 
     const [state, setState] = useState({
         storeId: location?.state?.storeId,
@@ -38,15 +39,27 @@ const Dashboard = (props) => {
     useEffect(() => {
         setStoreId(() => location?.state?.storeId || new URLSearchParams(location.search).get('storeId'));
 
+        const user = userService.getUser();
+
+        console.info({user})
+        if (user) {
+            setState(prev => {
+                return { ...prev, ...user }
+            })
+        }
         getAllProducts();
-    }, [storeId, location?.state?.storeId]);
+    }, [storeId]);
 
     return (
         <>
             <Row className="mt-2">
                 <Col className="right">
                     <div style={{ float: 'right'}}>
-                        <Button onClick ={userService.dologout}>Logout</Button>
+                        {!state.userName && <Button onClick ={()=>history.push('/login')}>Home</Button> }
+                        {
+                            state.userName &&
+                            <Button onClick ={userService.dologout}>Logout</Button>
+                         }
                     </div>
                 </Col>
             </Row>
