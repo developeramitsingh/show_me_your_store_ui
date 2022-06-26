@@ -2,36 +2,69 @@ import React, {useEffect, useState} from "react";
 import  { useFormik } from 'formik';
 import { Form, Button} from 'react-bootstrap';
 import { STATE_LIST, STORE_TYPES, STORE_CATEGORY } from '../../constants/constant';
-
+import { historyState } from '../../constants/globals';
 
 import storeService from '../../services/storeService';
 
 import { withRouter } from 'react-router-dom';
 import userService from "../../services/userService";
+import { useLocation } from "react-router-dom";
 
 
 const StoreRegistration = (props)=>{
+    const location = useLocation();
     const [state, setState]= useState({
         storeName: '',
+        storeType: '',
+        storeCategory: '',
+        storeAddress: '',
+        storeState: '',
+        storeCity: '',
         storePhone: '',
+        storePinCode: '',
         imgFile: null,
         storeImgThumb: '',
+        storeId: location?.state?.editStoreId || null,
     });
     useEffect(() => {
         userService.checkDoLogin('/addEditStore');
+
+        const getEditStore = async () => {
+            try {
+                if (location?.state?.editStoreId) {
+                    const editStoreId = location.state.editStoreId;
+                    const editStore = await storeService.getStoreById(editStoreId);
+
+                    if (editStore && editStore.data) {
+                        setState((st) => {
+                            const newData = {
+                                ...editStore.data,
+                                storeId: editStoreId
+                            }
+
+                            delete newData.storeImg;
+                            return { ...st, ...newData }
+                        })
+                    }
+                 }
+            } catch (err) {
+                console.error(`error in getEditProduct: ${err}`);
+            }
+        }
+
+        getEditStore();
     }, []);
     const formik = useFormik({
         initialValues: {...state },
         enableReinitialize: true,
 
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2))
             handleSubmit(values);
         }
     })
 
     const goBack = ()=> {
-        props.history.goBack();
+        historyState.history.goBack();
     }
 
     const handleImagePreview = (e) => {
@@ -59,13 +92,15 @@ const StoreRegistration = (props)=>{
         console.info({values});
         const formData = new FormData();
         for (const key in values) {
-            console.info(key, values[key]);
             formData.append(key, values[key]);
         }
+        console.info('-------calling service---->');
         //check if update case
         if (values._id) {
-            storeService.updateProduct(formData);
+            console.info('-------update service---->');
+            storeService.updateStore(formData);
         } else {
+            console.info('-------create service---->');
             storeService.createStore(formData);
         }
         goBack();
@@ -115,7 +150,7 @@ const StoreRegistration = (props)=>{
                         name = "storePinCode"
                         onChange = {formik.handleChange}
                         onBlur = {formik.handleBlur}
-                        value = {formik.values.pinCode}
+                        value = {formik.values.storePinCode}
                         placeholder = "Type here store pin code"
                     />
 
@@ -176,7 +211,7 @@ const StoreRegistration = (props)=>{
                 </Form.Group>
 
                 <Form.Group>
-                    <img height="100" src={state.storeImgThumb || state.imagePreview} alt="preview store img"/>
+                    <img height="100" src={state.imagePreview || state.storeImgThumb} alt="preview store img"/>
                 </Form.Group>
                 <Form.Group className ="mb-3">
                     <Form.Label>Store Image: </Form.Label>

@@ -23,11 +23,18 @@ const StoresList = () => {
     const handleClick = (e)=> {
         e.preventDefault();
         const id = e.target.id;
-
-        history.push({
-            pathname: '/dashboardStore',
-            state: { storeId: id }
-        })
+        const name = e.target.name;
+        if (name === 'goToDashboard') {
+            history.push({
+                pathname: '/dashboardStore',
+                state: { storeId: id }
+            })
+        } else if(name === 'editStore') {
+            history.push({
+                pathname: '/addEditStore',
+                state: { editStoreId: id }
+            })
+        }
     }
 
     return (
@@ -43,10 +50,9 @@ const StoresList = () => {
                 <Col className="d-flex">
                     {
                         state.allStores && state.allStores.map(store => {
-                            {console.table(store)}
                             return (
                                 <Card id={store._id} style={{ width: '18rem' }}>
-                                    <Card.Img variant="top" src={store.storeImg} />
+                                    <Card.Img variant="top" src={store.storeImgThumb} />
                                     <Card.Body>
                                         <Card.Title>{store.storeName}</Card.Title>
                                         <Card.Text>
@@ -58,9 +64,9 @@ const StoresList = () => {
                                             <div>Active: {store.isActive}</div>
                                         </Card.Text>
                                         <div className='d-flex justify-content-between'>
-                                            <Button variant="primary" id={store._id} onClick={handleClick}>Go to Store</Button>
+                                            <Button variant="primary" name="goToDashboard" id={store._id} onClick={handleClick}>Go to Dashboard</Button>
 
-                                            <Button variant="primary" id={store._id} onClick={handleClick}>Edit Store</Button>
+                                            <Button variant="primary" name="editStore" id={store._id} onClick={handleClick}>Edit Store</Button>
                                         </div>
                                     </Card.Body>
                                 </Card>
