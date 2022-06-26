@@ -70,7 +70,7 @@ const StoresList = () => {
                                             <div>Address: {store.storeAddress}</div>
                                             <div>City: {store.storeCity}</div>
                                             <div>Phone: {store.storePhone}</div>
-                                            <div>Active: {store.isActive}</div>
+                                            <div>Available: {store.isActive ? 'Yes' : 'No'}</div>
                                         </Card.Text>
                                         <Row>
                                             <Col xl={6} lg={6} md={6} sm={12} xs={12}>

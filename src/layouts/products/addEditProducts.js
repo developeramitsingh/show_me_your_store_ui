@@ -148,7 +148,7 @@ const AddEditProducts = () => {
         <>
             <Row>
                 <Col>
-                    <h1>Add New Products</h1>
+                    <h1>{location?.state?.editProductId ? 'Edit' : 'Add New'} Product</h1>
                 </Col>
             </Row>
             <Row>

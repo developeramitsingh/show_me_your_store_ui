@@ -108,7 +108,7 @@ const StoreRegistration = (props)=>{
 
     return  (
         <div>
-            <h1>Store Registration</h1>
+            <h1>Store {location?.state?.editStoreId ? 'Updation' : 'Registration'}</h1>
             <Form onSubmit ={formik.handleSubmit} className="mt-4">
                 <Form.Group className ="mb-3">
                     <Form.Label>Store Name: </Form.Label>
